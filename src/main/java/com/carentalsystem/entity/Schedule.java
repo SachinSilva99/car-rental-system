@@ -16,7 +16,6 @@ public class Schedule {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long scheduleID;
 
-
     @ManyToOne
     @JoinColumn(name = "driver_id")
     private Driver driver;
