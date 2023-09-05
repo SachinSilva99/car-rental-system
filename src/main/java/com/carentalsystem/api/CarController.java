@@ -34,11 +34,14 @@ public class CarController {
                 new StandardResponse(
                         200, id, carDTO
                 ),
-                HttpStatus.OK);
+                HttpStatus.OK
+        );
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<StandardResponse> update(@PathVariable String id, @RequestBody CarDTO carDTO) throws ClassNotFoundException {
+    public ResponseEntity<StandardResponse> update(
+            @PathVariable String id,
+            @RequestBody CarDTO carDTO) throws ClassNotFoundException {
         carDTO.setId(id);
         carService.update(carDTO, id);
         return new ResponseEntity<>(new StandardResponse(), HttpStatus.NO_CONTENT);
