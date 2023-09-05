@@ -21,7 +21,7 @@ public class Car {
     @Column(nullable = false)
     private String description;
 
-    @Enumerated
+    @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private CarType carType;
 
