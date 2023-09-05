@@ -6,23 +6,23 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-@ApiModel(description = "Represents a car.")
+
+import java.util.ArrayList;
+import java.util.List;
+
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
 public class CarDTO {
-    @ApiModelProperty(value = "The unique identifier of the car assigned by the backend.", readOnly = true)
     private String id;
-
     private String description;
-
     private CarType carType;
-
     private double dailyRate;
-
     private int freeKmsPerDay;
-
     private double monthlyRate;
-
     private int freeKmsPerMonth;
+    private byte[] img1;
+    private byte[] img2;
+    private byte[] img3;
+    private byte[] img4;
 }

@@ -9,8 +9,10 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import java.io.IOException;
+
 @RestControllerAdvice
-public class Advisor {
+public class ControllerAdvisor {
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(DuplicationException.class)
@@ -20,6 +22,18 @@ public class Advisor {
                         400, null, null
                 ),
                 HttpStatus.BAD_REQUEST);
+    }
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(IOException.class)
+    public ResponseEntity<StandardResponse> handleIOException(IOException e) {
+        return new ResponseEntity<>(
+                new StandardResponse(
+                        HttpStatus.BAD_REQUEST.value(),
+                        null,
+                        "Invalid JSON data"
+                ),
+                HttpStatus.BAD_REQUEST
+        );
     }
     @ResponseStatus(HttpStatus.NOT_FOUND)
     @ExceptionHandler(ClassNotFoundException.class)

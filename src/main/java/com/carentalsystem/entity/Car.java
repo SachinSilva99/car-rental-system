@@ -37,6 +37,19 @@ public class Car {
     @Column(nullable = false)
     private int freeKmsPerMonth;
 
+    @Lob
+    @Column(columnDefinition = "MEDIUMBLOB")
+    private byte[] img1;
+    @Lob
+    @Column(columnDefinition = "MEDIUMBLOB")
+    private byte[] img2;
+    @Lob
+    @Column(columnDefinition = "MEDIUMBLOB")
+    private byte[] img3;
+    @Lob
+    @Column(columnDefinition = "MEDIUMBLOB")
+    private byte[] img4;
+
     @OneToMany(mappedBy = "car")
     private List<RentalRequest> rentalRequestList = new ArrayList<>();
 }
