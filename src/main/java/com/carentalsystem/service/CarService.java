@@ -11,5 +11,5 @@ public interface CarService {
 
     void update(CarDTO carDTO, String id)throws ClassNotFoundException;
 
-    void delete(String id)throws InUseException;
+    void delete(String id) throws InUseException, ClassNotFoundException;
 }

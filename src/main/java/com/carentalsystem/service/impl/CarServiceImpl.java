@@ -21,15 +21,15 @@ public class CarServiceImpl implements CarService {
     private CarRepo carRepo;
 
     @Autowired
-    private  ModelMapper mapper;
+    private ModelMapper mapper;
 
 
     @Override
     @Transactional
-    public String create(CarDTO carDTO) throws DuplicationException {
-        String id = generateRandomID(6);
+    public String create(CarDTO carDTO)  {
+        String id = generateRandomID(10);
         while (carRepo.findById(id).isPresent()) {
-            id = generateRandomID(6);
+            id = generateRandomID(10);
         }
         Car car = mapper.map(carDTO, Car.class);
         car.setId(id);
@@ -38,17 +38,40 @@ public class CarServiceImpl implements CarService {
 
     @Override
     public CarDTO get(String id) throws ClassNotFoundException {
-        return null;
+        Optional<Car> byId = carRepo.findById(id);
+        if (byId.isEmpty()) {
+            throw new ClassNotFoundException(id + " not found");
+        }
+        return mapper.map(byId.get(), CarDTO.class);
     }
 
     @Override
     public void update(CarDTO carDTO, String id) throws ClassNotFoundException {
-
+        Optional<Car> byId = carRepo.findById(id);
+        if (byId.isEmpty()) {
+            throw new ClassNotFoundException(id + " not found");
+        }
+        Car car = byId.get();
+        car.setCarType(carDTO.getCarType());
+        car.setDescription(carDTO.getDescription());
+        car.setDailyRate(carDTO.getDailyRate());
+        car.setMonthlyRate(car.getMonthlyRate());
+        car.setFreeKmsPerDay(car.getFreeKmsPerDay());
+        car.setFreeKmsPerMonth(car.getFreeKmsPerMonth());
+        carRepo.save(car);
     }
 
     @Override
-    public void delete(String id) throws InUseException {
-
+    public void delete(String id) throws InUseException, ClassNotFoundException {
+        Optional<Car> byId = carRepo.findById(id);
+        if (byId.isEmpty()) {
+            throw new ClassNotFoundException(id + " not found");
+        }
+        try {
+            carRepo.delete(byId.get());
+        } catch (Exception e) {
+            throw new InUseException();
+        }
     }
 
     public String generateRandomID(int length) {
