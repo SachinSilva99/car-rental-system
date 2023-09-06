@@ -21,6 +21,7 @@ public class CarController {
 
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<StandardResponse> save(
+
             @RequestParam("carDTO") String carDTOJson,
             @RequestPart("img1") byte[] img1,
             @RequestPart("img2") byte[] img2,
@@ -35,6 +36,7 @@ public class CarController {
         carDTO.setImg3(img3);
         carDTO.setImg4(img4);
         String id = carService.create(carDTO);
+
         return new ResponseEntity<>(
                 new StandardResponse(
                         HttpStatus.CREATED.value(),
@@ -43,7 +45,6 @@ public class CarController {
                 ),
                 HttpStatus.CREATED
         );
-
     }
 
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)

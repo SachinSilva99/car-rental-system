@@ -5,14 +5,12 @@ import com.carentalsystem.entity.Car;
 import com.carentalsystem.repo.CarRepo;
 import com.carentalsystem.service.CarService;
 import com.carentalsystem.service.exception.InUseException;
-import com.carentalsystem.util.GenerateId;
+import com.carentalsystem.util.IdGenerator;
 import jakarta.transaction.Transactional;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.util.Optional;
-import java.util.Random;
 
 @Service
 public class CarServiceImpl implements CarService {
@@ -24,19 +22,17 @@ public class CarServiceImpl implements CarService {
     private ModelMapper mapper;
 
     @Autowired
-    private GenerateId generateId;
+    private IdGenerator idGenerator;
 
     @Override
     @Transactional
     public String create(CarDTO carDTO)  {
-        String id = generateId.generateRandomID(10);
+        String id = idGenerator.generateRandomID(10);
         while (carRepo.findById(id).isPresent()) {
-            id = generateId.generateRandomID(10);
+            id = idGenerator.generateRandomID(10);
         }
         Car car = mapper.map(carDTO, Car.class);
         car.setId(id);
-
-        System.out.println(car);
         return carRepo.save(car).getId();
     }
 

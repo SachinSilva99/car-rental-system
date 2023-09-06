@@ -6,14 +6,13 @@ import com.carentalsystem.repo.CustomerRepo;
 import com.carentalsystem.service.CustomerService;
 import com.carentalsystem.service.exception.DuplicationException;
 import com.carentalsystem.service.exception.InUseException;
-import com.carentalsystem.util.GenerateId;
+import com.carentalsystem.util.IdGenerator;
 import jakarta.transaction.Transactional;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
-import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.Optional;
 
 @Service
@@ -23,7 +22,7 @@ public class CustomerServiceImpl implements CustomerService {
     private CustomerRepo customerRepo;
 
     @Autowired
-    private GenerateId generateId;
+    private IdGenerator idGenerator;
 
     @Autowired
     private ModelMapper mapper;
@@ -31,10 +30,10 @@ public class CustomerServiceImpl implements CustomerService {
     @Override
     @Transactional
     public String create(CustomerDTO customerDTO)  {
-        String id = generateId.generateRandomID(10);
+        String id = idGenerator.generateRandomID(10);
         id += customerDTO.getUsername();
         while (customerRepo.findById(id).isPresent()) {
-            id = generateId.generateRandomID(10);
+            id = idGenerator.generateRandomID(10);
             id += customerDTO.getUsername();
         }
         customerDTO.setId(id);
@@ -73,7 +72,7 @@ public class CustomerServiceImpl implements CustomerService {
         customer.setUsername(dto.getUsername());
         customer.setPassword(dto.getPassword());
         customer.setPhoneNumber(dto.getPhoneNumber());
-        customerRepo.save(customer);
+        customerRepo.save(customer); //to do handle unique values
     }
 
     @Override

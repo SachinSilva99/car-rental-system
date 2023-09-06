@@ -4,7 +4,6 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -18,10 +17,10 @@ public class Driver implements Serializable {
     @Id
     private String id;
 
-    @Column
+    @Column(nullable = false)
     private String name;
 
-    @Column
+    @Column(unique = true,nullable = false)
     private String contactNo;
 
     @OneToMany(mappedBy = "driver", cascade = CascadeType.ALL)
