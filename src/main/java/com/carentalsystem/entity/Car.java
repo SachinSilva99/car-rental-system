@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,7 +14,7 @@ import java.util.List;
 @NoArgsConstructor
 @Data
 @Entity
-public class Car {
+public class Car implements Serializable {
 
     @Id
     private String id;
@@ -38,16 +39,16 @@ public class Car {
     private int freeKmsPerMonth;
 
     @Lob
-    @Column(columnDefinition = "MEDIUMBLOB")
+    @Column(columnDefinition = "MEDIUMBLOB",nullable = false)
     private byte[] img1;
     @Lob
-    @Column(columnDefinition = "MEDIUMBLOB")
+    @Column(columnDefinition = "MEDIUMBLOB",nullable = false)
     private byte[] img2;
     @Lob
-    @Column(columnDefinition = "MEDIUMBLOB")
+    @Column(columnDefinition = "MEDIUMBLOB",nullable = false)
     private byte[] img3;
     @Lob
-    @Column(columnDefinition = "MEDIUMBLOB")
+    @Column(columnDefinition = "MEDIUMBLOB",nullable = false)
     private byte[] img4;
 
     @OneToMany(mappedBy = "car")

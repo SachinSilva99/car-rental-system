@@ -19,7 +19,7 @@ public class ControllerAdvisor {
     public ResponseEntity<StandardResponse> handleDuplicationException(DuplicationException e) {
         return new ResponseEntity<>(
                 new StandardResponse(
-                        400, null, null
+                        400, e.getMessage(), null
                 ),
                 HttpStatus.BAD_REQUEST);
     }

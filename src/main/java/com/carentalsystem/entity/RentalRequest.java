@@ -5,12 +5,13 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-public class RentalRequest {
+public class RentalRequest implements Serializable {
     @Id
     private String requestId;
 
@@ -35,8 +36,9 @@ public class RentalRequest {
     @ManyToOne
     private Car car;
 
-    @Column
-    private String bankSlipImg;
+    @Lob
+    @Column(columnDefinition = "MEDIUMBLOB",nullable = false)
+    private byte[] bankSlipImg;
 
     @ManyToOne
     @JoinColumn(name = "customer_id")

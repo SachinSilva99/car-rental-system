@@ -3,20 +3,14 @@ package com.carentalsystem.api;
 import com.carentalsystem.dto.CarDTO;
 import com.carentalsystem.service.CarService;
 import com.carentalsystem.util.enums.StandardResponse;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import java.io.IOException;
-import java.util.Base64;
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/crs/cars")
@@ -34,8 +28,8 @@ public class CarController {
             @RequestPart("img4") byte[] img4
     ) throws IOException {
 
-        ObjectMapper objectMapper = new ObjectMapper();
-        CarDTO carDTO = objectMapper.readValue(carDTOJson, CarDTO.class);
+        CarDTO carDTO = new ObjectMapper().readValue(carDTOJson, CarDTO.class);
+
         carDTO.setImg1(img1);
         carDTO.setImg2(img2);
         carDTO.setImg3(img3);

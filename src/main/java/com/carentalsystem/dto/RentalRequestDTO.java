@@ -21,7 +21,7 @@ public class RentalRequestDTO {
 
     private String carId;
 
-    private String bankSlipImg;
+    private byte[] bankSlipImg;
 
     private String customerId;
 
