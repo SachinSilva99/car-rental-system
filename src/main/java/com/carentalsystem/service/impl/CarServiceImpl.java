@@ -77,7 +77,7 @@ public class CarServiceImpl implements CarService {
         try {
             carRepo.delete(byId.get());
         } catch (Exception e) {
-            throw new InUseException();
+            throw new InUseException(id+ " in use");
         }
     }
     @Override

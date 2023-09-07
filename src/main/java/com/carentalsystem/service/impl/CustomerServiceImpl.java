@@ -103,6 +103,9 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Override
     public Page<CustomerDTO> findAll(int page, int noOfCars) {
+/*        Page<Car> carPage = carRepo.findAll(PageRequest.of(page, noOfCars));
+        return carPage.map(car -> mapper.map(car, CarDTO.class));*/
+
         Page<Customer> carPage = customerRepo.findAll(PageRequest.of(page, noOfCars));
         return carPage.map(customer -> mapper.map(customer, CustomerDTO.class));
     }

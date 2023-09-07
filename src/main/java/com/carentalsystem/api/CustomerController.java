@@ -61,13 +61,13 @@ public class CustomerController {
     }
 
     @GetMapping("/{pageNumber}/{noOfCustomers}")
-    public ResponseEntity<StandardResponse> findAll(@PathVariable int noOfCustomers, @PathVariable int pageNumber) {
+    public ResponseEntity<StandardResponse> findAll(@PathVariable int pageNumber, @PathVariable int noOfCustomers) {
         Page<CustomerDTO> dtoPage = customerService.findAll(pageNumber, noOfCustomers);
         return new ResponseEntity<>(
                 new StandardResponse(
                         200,
                         "ok",
-                        dtoPage
+                        dtoPage.getSize()<=0 ? dtoPage: null
                 ),
                 HttpStatus.OK
         );
