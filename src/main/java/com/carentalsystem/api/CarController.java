@@ -5,6 +5,7 @@ import com.carentalsystem.service.CarService;
 import com.carentalsystem.util.enums.StandardResponse;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -71,5 +72,11 @@ public class CarController {
     public ResponseEntity<StandardResponse> delete(@PathVariable String id) throws ClassNotFoundException {
         carService.delete(id);
         return new ResponseEntity<>(new StandardResponse(), HttpStatus.NO_CONTENT);
+    }
+
+    @GetMapping("/{pageNumber}/{noOfCars}")
+    public ResponseEntity<StandardResponse> findAll(@PathVariable int noOfCars, @PathVariable int pageNumber){
+        Page<CarDTO> carDTOPage = carService.findAll(pageNumber, noOfCars);
+        return new ResponseEntity<>(new StandardResponse(200,"ok",carDTOPage), HttpStatus.OK);
     }
 }

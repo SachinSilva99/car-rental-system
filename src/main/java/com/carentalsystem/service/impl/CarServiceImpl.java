@@ -9,6 +9,8 @@ import com.carentalsystem.util.IdGenerator;
 import jakarta.transaction.Transactional;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import java.util.Optional;
 
@@ -76,5 +78,10 @@ public class CarServiceImpl implements CarService {
         } catch (Exception e) {
             throw new InUseException();
         }
+    }
+    @Override
+    public Page<CarDTO> findAll(int page, int noOfCars){
+        Page<Car> carPage = carRepo.findAll(PageRequest.of(page, noOfCars));
+        return carPage.map(car -> mapper.map(car, CarDTO.class));
     }
 }
