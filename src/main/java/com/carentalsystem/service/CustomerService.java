@@ -13,5 +13,5 @@ public interface CustomerService {
     void update(CustomerDTO customerDTO, String id) throws ClassNotFoundException;
 
     void delete(String id) throws InUseException, ClassNotFoundException;
-    Page<CustomerDTO> findAll(int page, int noOfCars);
+    Page<CustomerDTO> findAll(int page, int noOfCustomers);
 }
