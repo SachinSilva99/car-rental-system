@@ -7,6 +7,7 @@ import com.carentalsystem.service.DriverService;
 import com.carentalsystem.service.exception.DuplicationException;
 import com.carentalsystem.service.exception.InUseException;
 import com.carentalsystem.util.IdGenerator;
+import jakarta.transaction.Transactional;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -27,7 +28,7 @@ public class DriverServiceImpl implements DriverService {
 
     @Autowired
     private ModelMapper mapper;
-
+    @Transactional
     @Override
     public String create(DriverDTO driverDTO) {
         String id = idGenerator.generateRandomID(10);
@@ -54,6 +55,7 @@ public class DriverServiceImpl implements DriverService {
         return mapper.map(byId.get(), DriverDTO.class);
     }
 
+    @Transactional
     @Override
     public void update(DriverDTO driverDTO, String id) throws ClassNotFoundException {
         Optional<Driver> byId = driverRepo.findById(id);

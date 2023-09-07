@@ -48,6 +48,7 @@ public class CarServiceImpl implements CarService {
     }
 
     @Override
+    @Transactional
     public void update(CarDTO carDTO, String id) throws ClassNotFoundException {
         Optional<Car> byId = carRepo.findById(id);
         if (byId.isEmpty()) {
