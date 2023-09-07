@@ -10,6 +10,8 @@ import com.carentalsystem.util.IdGenerator;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -54,11 +56,37 @@ public class DriverServiceImpl implements DriverService {
 
     @Override
     public void update(DriverDTO driverDTO, String id) throws ClassNotFoundException {
-
+        Optional<Driver> byId = driverRepo.findById(id);
+        if (byId.isEmpty()) {
+            throw new ClassNotFoundException(id + " not found");
+        }
+        Driver driver = byId.get();
+        driver.setName(driverDTO.getName());
+        driver.setContactNo(driverDTO.getContactNo());
+        driverRepo.save(driver);
+        try {
+            driverRepo.save(driver);
+        } catch (DataIntegrityViolationException e) {
+            throw new DuplicationException("id :" + id + " contact no Already exists");
+        }
     }
 
     @Override
     public void delete(String id) throws InUseException, ClassNotFoundException {
+        Optional<Driver> byId = driverRepo.findById(id);
+        if (byId.isEmpty()) {
+            throw new ClassNotFoundException(id + " not found");
+        }
+        try {
+            driverRepo.delete(byId.get());
+        }catch (Exception e){
+            throw new InUseException(id+ " in use");
+        }
+    }
 
+    @Override
+    public Page<DriverDTO> findAll(int page, int noOfCars) {
+        Page<Driver> carPage = driverRepo.findAll(PageRequest.of(page, noOfCars));
+        return carPage.map(driver -> mapper.map(driver, DriverDTO.class));
     }
 }

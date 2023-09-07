@@ -1,6 +1,8 @@
 package com.carentalsystem.service.impl;
 
+import com.carentalsystem.dto.CarDTO;
 import com.carentalsystem.dto.CustomerDTO;
+import com.carentalsystem.entity.Car;
 import com.carentalsystem.entity.Customer;
 import com.carentalsystem.repo.CustomerRepo;
 import com.carentalsystem.service.CustomerService;
@@ -11,6 +13,8 @@ import jakarta.transaction.Transactional;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -29,7 +33,7 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Override
     @Transactional
-    public String create(CustomerDTO customerDTO)  {
+    public String create(CustomerDTO customerDTO) {
         String id = idGenerator.generateRandomID(10);
         id += customerDTO.getUsername();
         while (customerRepo.findById(id).isPresent()) {
@@ -39,8 +43,8 @@ public class CustomerServiceImpl implements CustomerService {
         customerDTO.setId(id);
         try {
             return customerRepo.save(mapper.map(customerDTO, Customer.class)).getId();
-        }catch (DataIntegrityViolationException e){
-            throw new DuplicationException("id :"+id+"   Driving license number \n" +
+        } catch (DataIntegrityViolationException e) {
+            throw new DuplicationException("id :" + id + "   Driving license number \n" +
                     "                  nic number \n" +
                     "                  username \n" +
                     "                  phone number\n" +
@@ -72,7 +76,16 @@ public class CustomerServiceImpl implements CustomerService {
         customer.setUsername(dto.getUsername());
         customer.setPassword(dto.getPassword());
         customer.setPhoneNumber(dto.getPhoneNumber());
-        customerRepo.save(customer); //to do handle unique values
+        try {
+            customerRepo.save(customer);
+
+        }catch (DataIntegrityViolationException e) {
+            throw new DuplicationException("id :" + id + "   Driving license number \n" +
+                    "                  nic number \n" +
+                    "                  username \n" +
+                    "                  phone number\n" +
+                    "                  Already exists");
+        }
     }
 
     @Override
@@ -83,8 +96,14 @@ public class CustomerServiceImpl implements CustomerService {
         }
         try {
             customerRepo.delete(byId.get());
-        }catch (Exception e){
-            throw new InUseException(id+ " in use");
+        } catch (Exception e) {
+            throw new InUseException(id + " in use");
         }
+    }
+
+    @Override
+    public Page<CustomerDTO> findAll(int page, int noOfCars) {
+        Page<Customer> carPage = customerRepo.findAll(PageRequest.of(page, noOfCars));
+        return carPage.map(customer -> mapper.map(customer, CustomerDTO.class));
     }
 }
