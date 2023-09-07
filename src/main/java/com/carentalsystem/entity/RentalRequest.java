@@ -3,6 +3,7 @@ package com.carentalsystem.entity;
 import com.carentalsystem.util.enums.payemntstatus.PaymentStatus;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
@@ -10,6 +11,7 @@ import java.time.LocalDateTime;
 
 @AllArgsConstructor
 @NoArgsConstructor
+@Data
 @Entity
 public class RentalRequest implements Serializable {
     @Id
@@ -30,6 +32,7 @@ public class RentalRequest implements Serializable {
     @Column(nullable = false)
     private boolean isDriverRequested;
 
+    @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private PaymentStatus paymentStatus;
 
